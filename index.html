@@ -1,57 +1,446 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Play Home</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>지연의 개발 및 디자인 블로그</title>
+    <!-- Tailwind CSS CDN 로드: 최신 웹 디자인 및 반응형 구현에 사용됩니다. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter 폰트 설정: 깔끔하고 가독성 높은 미니멀 디자인을 위해 사용합니다. -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        /* 기본 스타일 및 Inter 폰트 적용 */
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* 다크 모드 스타일 수정: body 태그 자체에 dark 클래스가 적용될 때 스타일이 적용되도록 수정했습니다. */
+        body.dark {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        /* 스크롤바 숨기기 (선택 사항, 깔끔한 디자인을 위해) */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* 섹션 간의 부드러운 전환 효과 */
+        .page-section {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 활성 내비게이션 링크 스타일 */
+        .nav-link.active {
+            font-weight: 600;
+            color: #2563eb; /* 블루 강조 */
+            border-bottom: 2px solid #2563eb;
+        }
+        .dark .nav-link.active {
+            color: #93c5fd; /* 밝은 블루 강조 */
+            border-bottom-color: #93c5fd;
+        }
+
+        /* 모바일 메뉴 스타일 */
+        #mobile-menu {
+            transition: max-height 0.3s ease-in-out;
+            overflow: hidden;
+            max-height: 0;
+        }
+        #mobile-menu.open {
+            max-height: 300px; /* 충분한 높이 설정 */
+        }
+    </style>
 </head>
-<body>
-    <header>
-        <h1>AI 강의 홈페이지</h1>
+
+<body class="bg-white text-gray-900 antialiased min-h-screen flex flex-col">
+
+    <!-- 1. 헤더 (Header): 로고 및 GNB, 모바일 메뉴 토글 버튼 포함 -->
+    <header class="sticky top-0 z-50 bg-white dark:bg-[#1e1e1e] shadow-md dark:shadow-lg transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- 로고/사이트 제목 -->
+                <div class="flex-shrink-0">
+                    <a href="#" class="text-2xl font-extrabold text-blue-600 dark:text-blue-400 hover:text-blue-800 transition-colors duration-300">
+                        지연's Log
+                    </a>
+                </div>
+
+                <!-- 데스크톱 GNB (Global Navigation Bar) -->
+                <nav class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                    <a href="#home" data-section="home" class="nav-link px-3 py-2 text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300 rounded-lg">홈</a>
+                    <a href="#tech" data-section="tech" class="nav-link px-3 py-2 text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300 rounded-lg">기술</a>
+                    <a href="#design" data-section="design" class="nav-link px-3 py-2 text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300 rounded-lg">디자인</a>
+                    <a href="#about" data-section="about" class="nav-link px-3 py-2 text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300 rounded-lg">소개</a>
+                </nav>
+
+                <!-- 다크 모드 토글 & 모바일 메뉴 버튼 -->
+                <div class="flex items-center space-x-4">
+                    <!-- 다크 모드 토글 버튼 (아이콘 동적 변경) -->
+                    <button id="dark-mode-toggle" class="p-2 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300">
+                        <!-- 아이콘은 JavaScript에 의해 동적으로 채워집니다. -->
+                        <svg id="dark-mode-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        </svg>
+                    </button>
+
+                    <!-- 모바일 메뉴 버튼 (sm 이하에서만 보임) -->
+                    <button id="mobile-menu-button" type="button" class="sm:hidden p-2 rounded-md text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">메인 메뉴 열기</span>
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 모바일 GNB (Mobile Menu) -->
+        <div id="mobile-menu" class="sm:hidden bg-gray-50 dark:bg-[#252525]">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#home" data-section="home" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-300">홈</a>
+                <a href="#tech" data-section="tech" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-300">기술</a>
+                <a href="#design" data-section="design" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-300">디자인</a>
+                <a href="#about" data-section="about" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-300">소개</a>
+            </div>
+        </div>
     </header>
 
-    <nav>
-        <ul>
-            <li><a href="#home">홈</a></li>
-            <li><a href="#about">소개</a></li>
-            <li><a href="#services">참고자료</a></li>
-            <li><a href="#contact">연락처</a></li>
-        </ul>
-    </nav>
+    <!-- 2. 메인 콘텐츠 영역 (Main Content Area) -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        
+        <!-- ============================================== -->
+        <!-- A. 홈 섹션: 최신 포스트 및 그리드 목록 -->
+        <!-- ============================================== -->
+        <section id="home-section" class="page-section active">
+            <h1 class="text-3xl font-bold mb-8 dark:text-white">최신 트렌드와 기술</h1>
 
-    <main>
-        <section class="hero">
-            <h2>AI 강의 내용</h2>
-            <p>인공지능 기본 원리 및 활용에 대해 알려 드립니다.</p>
-            <button id="cta-button">강의 내용 자세히 알아보기</button>
+            <!-- 최신 포스트 (Featured Post) 강조: 넓은 레이아웃 -->
+            <article class="bg-gray-50 dark:bg-[#1e1e1e] border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-lg mb-12 transform hover:shadow-xl transition duration-500 ease-in-out hover:scale-[1.01]">
+                <div class="md:flex">
+                    <!-- Featured Image (600x400 Placeholder) -->
+                    <div class="md:w-1/2">
+                        <!-- Picsum Photos (ID 101)로 교체: 안정적인 고품질 플레이스홀더 이미지 제공 -->
+                        <img src="https://picsum.photos/id/101/600/400" alt="최신 포스트 이미지" class="w-full h-64 md:h-full object-cover">
+                    </div>
+                    <!-- Content -->
+                    <div class="md:w-1/2 p-6 md:p-10 flex flex-col justify-center">
+                        <p class="text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase mb-2">기술 (Tech)</p>
+                        <h2 class="text-3xl font-extrabold mb-4 dark:text-white leading-tight">반응형 웹 디자인을 위한 CSS 그리드 완벽 가이드</h2>
+                        <p class="text-gray-600 dark:text-gray-400 mb-6 line-clamp-3">CSS Grid를 사용하여 복잡한 반응형 레이아웃을 어떻게 쉽고 효율적으로 구성할 수 있는지 자세히 설명합니다. 최신 브라우저 호환성과 실무 예제를 포함합니다.</p>
+                        <div class="flex items-center text-sm text-gray-500 dark:text-gray-500">
+                            <span>2024년 10월 27일</span>
+                            <span class="mx-3">•</span>
+                            <span>지연</span>
+                        </div>
+                        <a href="#" class="mt-4 inline-block font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors duration-300">
+                            계속 읽기 &rarr;
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 포스트 그리드 (Post Grid): 3열 구조 (lg:grid-cols-3) -->
+            <h2 class="text-2xl font-bold mb-6 dark:text-white">최근 포스트</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- 포스트 카드 1 -->
+                <div class="post-card bg-white dark:bg-[#1e1e1e] rounded-xl overflow-hidden shadow-md border border-gray-100 dark:border-gray-800 transition duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
+                    <!-- Picsum Photos (ID 201)로 교체 -->
+                    <img src="https://picsum.photos/id/201/400/250" alt="포스트 이미지 1" class="w-full h-48 object-cover">
+                    <div class="p-5">
+                        <p class="text-xs font-semibold text-pink-600 dark:text-pink-400 uppercase mb-1">디자인</p>
+                        <h3 class="text-lg font-bold mb-2 dark:text-white line-clamp-2">2025년 미니멀 디자인 트렌드 분석</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm mb-3 line-clamp-3">사용자 경험을 극대화하는 미니멀리즘 디자인 원칙과 최신 동향을 살펴봅니다.</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-500">2024년 10월 25일</p>
+                    </div>
+                </div>
+
+                <!-- 포스트 카드 2 -->
+                <div class="post-card bg-white dark:bg-[#1e1e1e] rounded-xl overflow-hidden shadow-md border border-gray-100 dark:border-gray-800 transition duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
+                    <!-- Picsum Photos (ID 301)로 교체 -->
+                    <img src="https://picsum.photos/id/301/400/250" alt="포스트 이미지 2" class="w-full h-48 object-cover">
+                    <div class="p-5">
+                        <p class="text-xs font-semibold text-green-600 dark:text-green-400 uppercase mb-1">기술</p>
+                        <h3 class="text-lg font-bold mb-2 dark:text-white line-clamp-2">Node.js 비동기 프로그래밍 마스터하기</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm mb-3 line-clamp-3">Async/Await, Promise 등 Node.js 환경에서 비동기 처리를 효과적으로 다루는 방법.</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-500">2024년 10월 20일</p>
+                    </div>
+                </div>
+
+                <!-- 포스트 카드 3 -->
+                <div class="post-card bg-white dark:bg-[#1e1e1e] rounded-xl overflow-hidden shadow-md border border-gray-100 dark:border-gray-800 transition duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
+                    <!-- Picsum Photos (ID 401)로 교체 -->
+                    <img src="https://picsum.photos/id/401/400/250" alt="포스트 이미지 3" class="w-full h-48 object-cover">
+                    <div class="p-5">
+                        <p class="text-xs font-semibold text-red-600 dark:text-red-400 uppercase mb-1">기술</p>
+                        <h3 class="text-lg font-bold mb-2 dark:text-white line-clamp-2">Git과 Github을 활용한 협업 워크플로우</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm mb-3 line-clamp-3">팀 프로젝트에서 Git 브랜치 전략(Git-flow)을 적용하는 실용적인 팁.</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-500">2024년 10월 15일</p>
+                    </div>
+                </div>
+
+                <!-- 포스트 카드 4 -->
+                <div class="post-card bg-white dark:bg-[#1e1e1e] rounded-xl overflow-hidden shadow-md border border-gray-100 dark:border-gray-800 transition duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
+                    <!-- Picsum Photos (ID 501)로 교체 -->
+                    <img src="https://picsum.photos/id/501/400/250" alt="포스트 이미지 4" class="w-full h-48 object-cover">
+                    <div class="p-5">
+                        <p class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase mb-1">디자인</p>
+                        <h3 class="text-lg font-bold mb-2 dark:text-white line-clamp-2">사용자 여정 지도(User Journey Map) 만들기</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm mb-3 line-clamp-3">UX 디자인에서 필수적인 사용자 여정 지도를 단계별로 만드는 방법.</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-500">2024년 10월 10일</p>
+                    </div>
+                </div>
+                
+                <!-- 포스트 카드 5 -->
+                <div class="post-card bg-white dark:bg-[#1e1e1e] rounded-xl overflow-hidden shadow-md border border-gray-100 dark:border-gray-800 transition duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
+                    <!-- Picsum Photos (ID 601)로 교체 -->
+                    <img src="https://picsum.photos/id/601/400/250" alt="포스트 이미지 5" class="w-full h-48 object-cover">
+                    <div class="p-5">
+                        <p class="text-xs font-semibold text-orange-600 dark:text-orange-400 uppercase mb-1">기술</p>
+                        <h3 class="text-lg font-bold mb-2 dark:text-white line-clamp-2">클린 코드 작성의 5가지 핵심 원칙</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm mb-3 line-clamp-3">가독성이 높고 유지보수가 쉬운 코드를 작성하기 위한 기본적인 가이드라인.</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-500">2024년 10월 05일</p>
+                    </div>
+                </div>
+
+                <!-- 포스트 카드 6 -->
+                <div class="post-card bg-white dark:bg-[#1e1e1e] rounded-xl overflow-hidden shadow-md border border-gray-100 dark:border-gray-800 transition duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
+                    <!-- Picsum Photos (ID 701)로 교체 -->
+                    <img src="https://picsum.photos/id/701/400/250" alt="포스트 이미지 6" class="w-full h-48 object-cover">
+                    <div class="p-5">
+                        <p class="text-xs font-semibold text-cyan-600 dark:text-cyan-400 uppercase mb-1">디자인</p>
+                        <h3 class="text-lg font-bold mb-2 dark:text-white line-clamp-2">웹 접근성을 높이는 색상 대비 가이드</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm mb-3 line-clamp-3">WCAG 기준을 충족하는 색상 대비 비율을 적용하는 실무적인 방법.</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-500">2024년 10월 01일</p>
+                    </div>
+                </div>
+
+            </div>
         </section>
 
-        <section class="features">
-            <div class="feature-card">
-                <h3>인공 지능 ?</h3>
-                <p>인공 지능 개념</p>
-            </div>
-            <div class="feature-card">
-                <h3>인공지능 기본 원리</h3>
-                <p>인공지능을 이루는 기본 원리에 대한 설명</p>
-            </div>
-            <div class="feature-card">
-                <h3>인공지능 활용</h3>
-                <p>인공지능의 다양한 활용법에 대한 설명</p>
-            </div>
-            <div class="feature-card">
-                <h3>인공지능 관련 링크</h3>
-                <p>인공지능 관련 주요 사이트</p>
+        <!-- ============================================== -->
+        <!-- B. 기술 섹션 -->
+        <!-- ============================================== -->
+        <section id="tech-section" class="page-section">
+            <h1 class="text-3xl font-bold mb-8 dark:text-white">기술 (Tech)</h1>
+            <div class="bg-gray-50 dark:bg-[#1e1e1e] p-8 rounded-xl shadow-md border border-gray-200 dark:border-gray-700">
+                <p class="text-gray-700 dark:text-gray-300 mb-4">
+                    이곳은 코딩, 프로그래밍 언어, 개발 도구 및 아키텍처 등 **기술 관련 깊이 있는 콘텐츠**를 다루는 공간입니다.
+                </p>
+                <ul class="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-2 ml-4">
+                    <li>최신 JavaScript 프레임워크 (React, Vue, Angular) 비교 분석</li>
+                    <li>백엔드 개발 환경 설정 (Node.js, Python/Django, Spring Boot)</li>
+                    <li>클라우드 컴퓨팅 및 DevOps 기초 (AWS, Docker, CI/CD)</li>
+                </ul>
+                <p class="mt-6 text-sm text-gray-500">실제 블로그 배포 시 이 섹션에는 기술 관련 포스트 목록이 자동으로 로드되도록 구성할 수 있습니다.</p>
             </div>
         </section>
+
+        <!-- ============================================== -->
+        <!-- C. 디자인 섹션 -->
+        <!-- ============================================== -->
+        <section id="design-section" class="page-section">
+            <h1 class="text-3xl font-bold mb-8 dark:text-white">디자인 (Design)</h1>
+            <div class="bg-gray-50 dark:bg-[#1e1e1e] p-8 rounded-xl shadow-md border border-gray-200 dark:border-gray-700">
+                <p class="text-gray-700 dark:text-gray-300 mb-4">
+                    이곳은 UX/UI 원칙, 미니멀리즘 트렌드, 타이포그래피, 색상 이론 등 **디자인 관련 콘텐츠**를 다루는 공간입니다.
+                </p>
+                <ul class="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-2 ml-4">
+                    <li>사용자 중심 디자인(UCD)의 5단계 과정</li>
+                    <li>Figma, Sketch를 활용한 디자인 시스템 구축</li>
+                    <li>모바일 앱 디자인을 위한 Haptic Feedback 활용법</li>
+                </ul>
+                <p class="mt-6 text-sm text-gray-500">실제 블로그 배포 시 이 섹션에는 디자인 관련 포스트 목록이 자동으로 로드되도록 구성할 수 있습니다.</p>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- D. 소개 섹션 -->
+        <!-- ============================================== -->
+        <section id="about-section" class="page-section">
+            <h1 class="text-3xl font-bold mb-8 dark:text-white">지연을 소개합니다</h1>
+            <div class="bg-gray-50 dark:bg-[#1e1e1e] p-8 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+                <div class="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-8">
+                    <!-- 프로필 이미지 (로컬 경로) -->
+                    <img src="image/profile.jpg" alt="프로필 이미지" class="rounded-full w-24 h-24 object-cover border-4 border-blue-400 dark:border-blue-600">
+                    
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">안녕하세요, 지연입니다.</h2>
+                        <p class="text-gray-700 dark:text-gray-300 mb-4 max-w-2xl">
+                            저는 웹 기술과 사용자 경험(UX/UI) 디자인에 깊은 관심을 가진 개발자입니다. 이 블로그는 제가 학습하고 탐구하는 **기술(Tech)**과 **디자인(Design)**에 대한 생각들을 공유하는 공간입니다. 지속 가능한 성장을 위한 기록을 남기고자 합니다.
+                        </p>
+                        
+                        <!-- 연락처 및 소셜 미디어 -->
+                        <div class="space-y-2 text-gray-600 dark:text-gray-400">
+                            <p class="flex items-center space-x-2">
+                                <!-- Email: kjy57571234@gmail.com -->
+                                <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-2 4v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path></svg>
+                                <a href="mailto:kjy57571234@gmail.com" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">kjy57571234@gmail.com</a>
+                            </p>
+                            <p class="flex items-center space-x-2">
+                                <!-- Github: https://github.com/judy785 -->
+                                <svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.419 2.864 8.166 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.867-.013-1.7-2.782.603-3.37-1.34-3.37-1.34-.455-1.157-1.11-1.465-1.11-1.465-.907-.62.068-.607.068-.607 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.83.091-.643.35-1.087.636-1.336-2.22-.252-4.555-1.11-4.555-4.943 0-1.09.39-1.984 1.029-2.682-.103-.252-.447-1.27.098-2.65 0 0 .84-.27 2.75 1.025.798-.222 1.644-.333 2.492-.337.848.004 1.694.115 2.492.337 1.908-1.295 2.747-1.025 2.747-1.025.546 1.38.202 2.398.099 2.65.64.698 1.028 1.592 1.028 2.682 0 3.843-2.337 4.686-4.564 4.935.359.308.678.917.678 1.848 0 1.335-.012 2.415-.012 2.74c0 .268.18.579.688.481C21.144 20.162 24 16.416 24 12c0-5.523-4.477-10-10-10z" clip-rule="evenodd"></path></svg>
+                                <a href="https://github.com/judy785" target="_blank" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">github.com/judy785</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
-    <footer>
-        <p>&copy; <span id="current-year"></span>All rights reserved. ksw@etri.re.kr</p>
+    <!-- 3. 푸터 (Footer): 저작권 정보, 소셜 미디어 링크, 간단한 내비게이션 -->
+    <footer class="bg-gray-100 dark:bg-[#1e1e1e] border-t border-gray-200 dark:border-gray-700 py-8 mt-12 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="md:flex md:justify-between md:items-center space-y-6 md:space-y-0">
+                <!-- 저작권 및 로고 -->
+                <div class="text-center md:text-left">
+                    <p class="text-lg font-semibold text-gray-800 dark:text-white mb-2">지연's Log</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                        &copy; 2024. Jiyeon. All rights reserved.
+                    </p>
+                </div>
+
+                <!-- 푸터 내비게이션 -->
+                <div class="flex justify-center md:justify-end space-x-6 text-sm">
+                    <a href="#home" data-section="home" class="footer-link text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">홈</a>
+                    <a href="#tech" data-section="tech" class="footer-link text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">기술</a>
+                    <a href="#about" data-section="about" class="footer-link text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">소개</a>
+                    <a href="https://github.com/judy785" target="_blank" class="footer-link text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">Github</a>
+                </div>
+            </div>
+        </div>
     </footer>
 
-    <script src="script.js"></script>
+    <!-- 4. JavaScript: DOM 조작, 네비게이션 및 다크 모드 토글 구현 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // ==============================================
+            // JS 주요 구성 요소
+            // ==============================================
+            const body = document.body;
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.page-section');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            const darkModeIcon = document.getElementById('dark-mode-icon');
+            
+            // SVG 아이콘 경로 정의 (태양: Light Mode, 달: Dark Mode)
+            // Light Mode일 때(다크 모드 요청)는 달 아이콘을 보여주고,
+            // Dark Mode일 때(라이트 모드 요청)는 태양 아이콘을 보여줍니다.
+            const SUN_ICON = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>';
+            const MOON_ICON = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>';
+
+            // 아이콘을 현재 모드에 맞게 업데이트하는 함수
+            const updateIcon = (isDark) => {
+                if (isDark) {
+                    // 다크 모드일 때: 라이트 모드로 전환 요청 (태양 아이콘)
+                    darkModeIcon.innerHTML = SUN_ICON;
+                    darkModeIcon.setAttribute('aria-label', '라이트 모드 전환');
+                } else {
+                    // 라이트 모드일 때: 다크 모드로 전환 요청 (달 아이콘)
+                    darkModeIcon.innerHTML = MOON_ICON;
+                    darkModeIcon.setAttribute('aria-label', '다크 모드 전환');
+                }
+            };
+
+            // 초기 섹션 설정 및 해시 기반 라우팅
+            const showSection = (sectionId) => {
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                const targetSection = document.getElementById(sectionId + '-section');
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                    
+                    // GNB 링크 활성화 상태 업데이트
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('data-section') === sectionId) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            };
+
+            // 해시 변경 리스너
+            const handleHashChange = () => {
+                const hash = window.location.hash.substring(1) || 'home';
+                showSection(hash);
+                // 모바일 메뉴가 열려있으면 닫기
+                if (mobileMenu.classList.contains('open')) {
+                    mobileMenu.classList.remove('open');
+                }
+            };
+
+            // 초기 로드 시 실행
+            handleHashChange();
+            window.addEventListener('hashchange', handleHashChange);
+
+            // GNB 클릭 이벤트 리스너 (모바일 메뉴 포함)
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const sectionId = link.getAttribute('data-section');
+                    // URL 해시 업데이트를 통해 handleHashChange가 호출되도록 함
+                    window.location.hash = sectionId;
+                });
+            });
+
+
+            // ==============================================
+            // 모바일 메뉴 토글
+            // ==============================================
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('open');
+            });
+
+
+            // ==============================================
+            // 다크 모드 스위치
+            // ==============================================
+            const isDarkModeInitial = localStorage.getItem('theme') === 'dark' || 
+                                (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+            // 1. 초기 상태 설정
+            if (isDarkModeInitial) {
+                body.classList.add('dark');
+            }
+            // 초기 아이콘 상태 설정
+            updateIcon(body.classList.contains('dark'));
+
+
+            // 2. 토글 이벤트 리스너
+            darkModeToggle.addEventListener('click', () => {
+                body.classList.toggle('dark');
+                const isDark = body.classList.contains('dark');
+                
+                // localStorage에 상태 저장
+                if (isDark) {
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    localStorage.setItem('theme', 'light');
+                }
+                
+                // 아이콘 업데이트
+                updateIcon(isDark);
+            });
+        });
+    </script>
+
 </body>
 </html>
+
