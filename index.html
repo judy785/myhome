@@ -80,7 +80,8 @@
                 <!-- 데스크톱 GNB (Global Navigation Bar) -->
                 <nav class="hidden sm:ml-6 sm:flex sm:space-x-8">
                     <a href="#home" data-section="home" class="nav-link px-3 py-2 text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300 rounded-lg">홈</a>
-                    <a href="#tech" data-section="tech" class="nav-link px-3 py-2 text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300 rounded-lg">기술</a>
+                    <!-- '기술'을 '관심사'로 변경 -->
+                    <a href="#tech" data-section="tech" class="nav-link px-3 py-2 text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300 rounded-lg">관심사</a>
                     <a href="#design" data-section="design" class="nav-link px-3 py-2 text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300 rounded-lg">디자인</a>
                     <a href="#about" data-section="about" class="nav-link px-3 py-2 text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300 rounded-lg">소개</a>
                 </nav>
@@ -109,7 +110,8 @@
         <div id="mobile-menu" class="sm:hidden bg-gray-50 dark:bg-[#252525]">
             <div class="px-2 pt-2 pb-3 space-y-1">
                 <a href="#home" data-section="home" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-300">홈</a>
-                <a href="#tech" data-section="tech" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-300">기술</a>
+                <!-- '기술'을 '관심사'로 변경 -->
+                <a href="#tech" data-section="tech" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-300">관심사</a>
                 <a href="#design" data-section="design" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-300">디자인</a>
                 <a href="#about" data-section="about" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-300">소개</a>
             </div>
@@ -229,20 +231,42 @@
         </section>
 
         <!-- ============================================== -->
-        <!-- B. 기술 섹션 -->
+        <!-- B. 관심사 섹션 (기존 tech-section) -->
         <!-- ============================================== -->
         <section id="tech-section" class="page-section">
-            <h1 class="text-3xl font-bold mb-8 dark:text-white">기술 (Tech)</h1>
+            <!-- 제목 변경: '기술 (Tech)'에서 '관심사 (Interests)'로 -->
+            <h1 class="text-3xl font-bold mb-8 dark:text-white">관심사 (Interests)</h1>
             <div class="bg-gray-50 dark:bg-[#1e1e1e] p-8 rounded-xl shadow-md border border-gray-200 dark:border-gray-700">
-                <p class="text-gray-700 dark:text-gray-300 mb-4">
-                    이곳은 코딩, 프로그래밍 언어, 개발 도구 및 아키텍처 등 **기술 관련 깊이 있는 콘텐츠**를 다루는 공간입니다.
+                <p class="text-gray-700 dark:text-gray-300 mb-6">
+                    현재 제가 시간과 노력을 투자하며 탐구하고 있는 세 가지 주요 관심 분야입니다. 기술, 경제, 그리고 개인적인 성장을 위한 활동을 균형 있게 다루고자 합니다.
                 </p>
-                <ul class="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-2 ml-4">
-                    <li>최신 JavaScript 프레임워크 (React, Vue, Angular) 비교 분석</li>
-                    <li>백엔드 개발 환경 설정 (Node.js, Python/Django, Spring Boot)</li>
-                    <li>클라우드 컴퓨팅 및 DevOps 기초 (AWS, Docker, CI/CD)</li>
+
+                <!-- 1. 취미 (Hobby) -->
+                <h2 class="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-3 border-b pb-1 border-gray-300 dark:border-gray-600">
+                    취미 (Hobby)
+                </h2>
+                <ul class="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-2 ml-4 mb-6">
+                    <li>**사진 및 영상 편집:** 일상과 여행의 순간을 기록하고 편집 기술(Adobe Premiere Pro, Lightroom)을 연습합니다.</li>
+                    <li>**미니멀 라이프:** 불필요한 것을 줄여 업무와 삶의 효율성을 극대화하는 방법을 실천합니다.</li>
                 </ul>
-                <p class="mt-6 text-sm text-gray-500">실제 블로그 배포 시 이 섹션에는 기술 관련 포스트 목록이 자동으로 로드되도록 구성할 수 있습니다.</p>
+
+                <!-- 2. 주식 (Stocks) -->
+                <h2 class="text-2xl font-bold text-green-600 dark:text-green-400 mb-3 border-b pb-1 border-gray-300 dark:border-gray-600">
+                    주식 (Stocks)
+                </h2>
+                <ul class="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-2 ml-4 mb-6">
+                    <li>**가치 투자 연구:** 장기적 관점에서 안정적인 기업의 재무 상태와 사업 모델을 분석합니다.</li>
+                    <li>**거시 경제 분석:** 금리, 환율, 인플레이션 등 거시 경제 지표가 시장에 미치는 영향을 추적합니다.</li>
+                </ul>
+
+                <!-- 3. AI (Artificial Intelligence) -->
+                <h2 class="text-2xl font-bold text-indigo-600 dark:text-indigo-400 mb-3 border-b pb-1 border-gray-300 dark:border-gray-600">
+                    AI (Artificial Intelligence)
+                </h2>
+                <ul class="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-2 ml-4">
+                    <li>**Generative AI 동향:** GPT, Midjourney 등 생성형 AI의 최신 기술 및 활용 사례를 학습합니다.</li>
+                    <li>**머신러닝(ML) 기반 웹 서비스 통합:** 프론트엔드 개발자로서 ML 모델을 웹 애플리케이션에 통합하는 방법을 탐구합니다.</li>
+                </ul>
             </div>
         </section>
 
@@ -315,7 +339,8 @@
                 <!-- 푸터 내비게이션 -->
                 <div class="flex justify-center md:justify-end space-x-6 text-sm">
                     <a href="#home" data-section="home" class="footer-link text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">홈</a>
-                    <a href="#tech" data-section="tech" class="footer-link text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">기술</a>
+                    <!-- '기술'을 '관심사'로 변경 -->
+                    <a href="#tech" data-section="tech" class="footer-link text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">관심사</a>
                     <a href="#about" data-section="about" class="footer-link text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">소개</a>
                     <a href="https://github.com/judy785" target="_blank" class="footer-link text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">Github</a>
                 </div>
@@ -443,4 +468,5 @@
 
 </body>
 </html>
+
 
