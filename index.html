@@ -178,7 +178,7 @@
             <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row">
                 <!-- 프로필 이미지 -->
                 <div class="md:w-2/5 h-64 md:h-auto relative">
-                    <!-- [이미지 반영 수정]: Pexels를 사용한 프로필 이미지 Placeholder -->
+                    <!-- [이미지 반영]: Pexels를 사용한 프로필 이미지 Placeholder -->
                     <img src="https://images.pexels.com/photos/3184428/pexels-photo-3184428.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" onerror="this.onerror=null; this.src='https://placehold.co/500x700/60a5fa/ffffff?text=Jiyeon+Profile';" alt="지연 프로필" class="absolute inset-0 w-full h-full object-cover">
                 </div>
                 
@@ -241,16 +241,35 @@
 
     <!-- [JavaScript]: 데이터, 라우팅, DOM 조작 로직 -->
     <script>
-        // 1. CSV 데이터 (새로운 CSV 파일을 기반으로 업데이트)
+        // 1. CSV 데이터
         const csvData = [
+            // [Design Post 1]
+            { 
+                category: 'design', 
+                sub: 'ui/ux', 
+                title: '마이크로 인터렉션의 힘', 
+                content: '사용자 경험 향상 애니메이션을 통해 인터페이스를 생동감 있게 만드는 방법론과 사례를 분석합니다.', 
+                date: '2025-11-30', // Featured Post보다 이전 날짜
+                image: 'https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' 
+            },
+            // [Design Post 2]
+            { 
+                category: 'design', 
+                sub: 'system', 
+                title: '디자인 시스템 구축 실패기', 
+                content: '토큰 네이밍부터 문서화, 컴포넌트 라이브러리 배포까지, 디자인 시스템 구축 시 겪었던 어려움과 교훈을 공유합니다.', 
+                date: '2025-11-29', // Featured Post보다 이전 날짜
+                image: 'https://images.pexels.com/photos/317377/pexels-photo-317377.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+            },
+            // [Technology Posts] (이미지 URL 업데이트)
             { 
                 category: 'technology', 
                 sub: 'AI 기술', 
                 title: '생성형 AI 기반 UI 자동 구성 기술', 
                 content: '사용자 행동을 학습해 화면 구성을 자동으로 생성하는 AI 기술 트렌드 사례 설명', 
                 date: '2025-12-01',
-                // [이미지 반영 수정]: Pexels URL 사용
-                image: 'https://images.pexels.com/photos/11030999/pexels-photo-11030999.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' 
+                // [이미지 반영 수정]: Pexels 고정 URL로 교체 (AI 관련)
+                image: 'https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' 
             },
             { 
                 category: 'technology', 
@@ -258,7 +277,6 @@
                 title: '2025년 AI 산업을 이끄는 주요 기술 업데이트', 
                 content: '생성형 AI 모델의 진화, LLM 기반 자동화 확대 등 2025년에 등장한 AI 기술 변화를 정리한 최신 브리핑.', 
                 date: '2025-12-02',
-                // [이미지 반영 수정]: Pexels URL 사용
                 image: 'https://images.pexels.com/photos/16843058/pexels-photo-16843058/free-photo-of-ai-technology-digital-display-and-a-robot-hand.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
             },
             { 
@@ -267,7 +285,6 @@
                 title: '자바스크립트 런타임의 시대별 변화', 
                 content: '브라우저 JS 엔진, Node.js, Deno, Bun까지 이어지는 실행 환경 발전 과정과 성능 변화 정리', 
                 date: '2025-12-03',
-                // [이미지 반영 수정]: Pexels URL 사용
                 image: 'https://images.pexels.com/photos/574071/pexels-photo-574071.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
             },
             { 
@@ -276,7 +293,6 @@
                 title: 'GitHub Actions로 자동화 파이프라인 구축하기', 
                 content: '프로젝트 적용 사례, 자동 테스트·빌드 흐름 설명', 
                 date: '2025-12-04',
-                // [이미지 반영 수정]: Pexels URL 사용
                 image: 'https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
             },
             { 
@@ -285,7 +301,6 @@
                 title: '엣지 컴퓨팅과 분산 웹 아키텍처', 
                 content: '최신 웹 구조의 작동 방식과 사용자에게 제공되는 성능 이점 분석', 
                 date: '2025-12-05',
-                // [이미지 반영 수정]: Pexels URL 사용
                 image: 'https://images.pexels.com/photos/4145349/pexels-photo-4145349.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
             },
             // [Featured Post] 최신 글 (2025-12-06)
@@ -295,7 +310,6 @@
                 title: '개인 취향 기반 추천 웹 앱 개발기', 
                 content: '아이디어 기획부터 UI 설계, API 구성, 배포까지의 과정을 단계별로 정리한 제작 스토리', 
                 date: '2025-12-06',
-                // [이미지 반영 수정]: Pexels URL 사용
                 image: 'https://images.pexels.com/photos/3861958/pexels-photo-3861958.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' 
             }
         ];
@@ -344,7 +358,7 @@
                 // 카테고리 필터링 시 제목 업데이트
                 const headingText = {
                     'technology': '기술/AI/웹 개념 포스트',
-                    'design': '디자인 포스트 (준비 중)',
+                    'design': '디자인 포스트', 
                     'all': '전체 포스트'
                 }[filterCategory] || '전체 포스트';
                 document.getElementById('grid-heading').innerText = headingText;
@@ -364,7 +378,7 @@
     
                     card.innerHTML = `
                         <div class="relative h-48 overflow-hidden">
-                            <!-- 포스트 카드 이미지 (Pexels URL 사용) -->
+                            <!-- 포스트 카드 이미지 (URL 사용) -->
                             <img src="${post.image}" onerror="this.onerror=null; this.src='https://placehold.co/600x400/334155/ffffff?text=Image+Failed';" alt="${post.title}" class="w-full h-full object-cover card-zoom-image group-hover:opacity-90">
                             <div class="absolute top-3 left-3">
                                 <span class="px-3 py-1 text-xs font-semibold text-white rounded-full ${badgeColor} uppercase tracking-wide">
