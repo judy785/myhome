@@ -1,473 +1,132 @@
 <!DOCTYPE html>
-<html lang="ko" class="scroll-smooth">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <!-- [반응형 설계]: 뷰포트 설정. 모바일, 태블릿, 데스크톱에서 최적화된 너비를 보장합니다. -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>지연의 블로그 | AI 및 웹 지식 로그</title>
-    
-    <!-- 
-        [기술 스택]: Tailwind CSS, Font Awesome, Noto Sans KR 폰트 로드
-    -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-
-    <!-- [Tailwind 커스텀 설정]: 다크모드 및 포인트 컬러 정의 -->
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Noto Sans KR', 'sans-serif'],
-                    },
-                    colors: {
-                        primary: '#3b82f6', // Blue 500
-                        secondary: '#10b981', // Emerald 500
-                        darkBg: '#0f172a', // Slate 900
-                    }
-                }
-            }
-        }
-    </script>
-
+    <title>지연 김의 삶의 철학</title>
     <style>
-        /* [SPA 애니메이션]: 부드러운 화면 전환 효과 */
-        .fade-in {
-            animation: fadeIn 0.5s ease-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        :root {
+            --bg-color: #f7f6f3;
+            --text-color: #2c3e50;
+            --accent-color: #8da499;
+            --card-bg: #ffffff;
         }
 
-        /* [디자인 요소]: 이미지 줌 효과 */
-        .card-zoom-image {
-            transition: transform 0.5s ease;
-        }
-        .group:hover .card-zoom-image {
-            transform: scale(1.05);
-        }
-
-        /* [텍스트 처리]: 2줄 이상 내용 줄임 */
-        .line-clamp-2 {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+        body {
+            font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.8;
+            margin: 0;
+            padding: 0;
         }
 
-        /* [GNB 활성화]: 하단 Underline 효과 */
-        .nav-link {
-            position: relative;
+        header {
+            text-align: center;
+            padding: 80px 20px 40px 20px;
         }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -4px;
-            left: 0;
-            background-color: '#3b82f6'; /* primary color */
-            transition: width 0.3s;
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
         }
-        .nav-link:hover::after,
-        .nav-link.active::after {
-            width: 100%;
+
+        header p {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            font-style: italic;
         }
-        
-        /* [반응형 스타일]: 모바일 화면 대비 패딩 조정 */
-        @media (max-width: 640px) {
-            .featured-post-height {
-                height: 300px; /* 모바일에서 높이 조정 */
-            }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .main-philosophy {
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+            margin-bottom: 40px;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .main-philosophy h2 {
+            font-size: 1.5rem;
+            margin-top: 0;
+            color: var(--accent-color);
+        }
+
+        .philosophy-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .philosophy-list li {
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+        }
+
+        .philosophy-list strong {
+            display: block;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: #34495e;
+        }
+
+        .quote {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #555;
+            margin: 60px 0;
+            line-height: 2;
+            font-weight: 300;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 0.9rem;
+            color: #95a5a6;
+            border-top: 1px solid #e0e0e0;
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 dark:bg-darkBg dark:text-gray-100 flex flex-col min-h-screen font-sans">
+<body>
 
-    <!-- [헤더 섹션]: 상단 고정 (sticky), 배경 블러 효과 적용 -->
-    <header class="sticky top-0 z-50 bg-white/80 dark:bg-darkBg/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 transition-colors duration-300">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <!-- 로고/사이트 제목 -->
-                <div class="flex-shrink-0 cursor-pointer" onclick="router('home')">
-                    <span class="text-2xl font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                        Jiyeon's Log
-                    </span>
-                </div>
-
-                <!-- [GNB] 데스크톱 메뉴 -->
-                <nav class="hidden md:flex space-x-8">
-                    <button onclick="router('home')" class="nav-link font-medium hover:text-primary transition-colors active" id="nav-home">홈</button>
-                    <button onclick="router('technology')" class="nav-link font-medium hover:text-primary transition-colors" id="nav-technology">기술</button>
-                    <button onclick="router('design')" class="nav-link font-medium hover:text-primary transition-colors" id="nav-design">디자인</button>
-                    <button onclick="router('about')" class="nav-link font-medium hover:text-primary transition-colors" id="nav-about">소개</button>
-                </nav>
-
-                <!-- 우측 컨트롤 (다크모드 토글, 모바일 메뉴 버튼) -->
-                <div class="flex items-center space-x-4">
-                    <!-- 다크모드 토글 -->
-                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none" aria-label="Toggle Dark Mode">
-                        <i class="fas fa-moon text-gray-600 dark:text-yellow-300 text-lg"></i>
-                    </button>
-
-                    <!-- 모바일 메뉴 버튼 -->
-                    <button id="mobile-menu-btn" class="md:hidden p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 모바일 메뉴 -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-darkBg border-t border-gray-200 dark:border-gray-700">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <button onclick="router('home')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-800">홈</button>
-                <button onclick="router('technology')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-800">기술</button>
-                <button onclick="router('design')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-800">디자인</button>
-                <button onclick="router('about')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-800">소개</button>
-            </div>
-        </div>
+    <header>
+        <h1>지연 김의 삶의 철학</h1>
+        <p>알차고 즐거운, 행복한 삶을 기록하는 공간</p>
     </header>
 
-    <!-- [메인 콘텐츠]: SPA 섹션 컨테이너 -->
-    <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="container">
         
-        <!-- 섹션 1: 블로그 피드 (홈, 기술, 디자인) -->
-        <div id="blog-section" class="space-y-12 fade-in">
-            <!-- [Featured Post]: 최신 포스트 1개 강조 -->
-            <section id="featured-post-container" class="relative rounded-2xl overflow-hidden shadow-xl group cursor-pointer featured-post-height h-[400px] md:h-[500px]">
-                <!-- 배경 이미지 (Placeholder) -->
-                <img id="featured-img" src="" alt="Featured Post Placeholder" class="absolute inset-0 w-full h-full object-cover card-zoom-image">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"></div>
-                
-                <!-- 텍스트 오버레이 -->
-                <div class="absolute bottom-0 left-0 p-6 md:p-10 w-full md:w-3/4">
-                    <span id="featured-badge" class="inline-block px-3 py-1 mb-4 text-xs font-bold tracking-wider text-white uppercase bg-primary rounded-full">
-                        Featured
-                    </span>
-                    <h2 id="featured-title" class="text-3xl md:text-5xl font-extrabold text-white mb-4 leading-tight">
-                        로딩 중...
-                    </h2>
-                    <p id="featured-desc" class="text-gray-300 text-lg mb-4 line-clamp-2">
-                        콘텐츠를 불러오는 중입니다.
-                    </p>
-                    <div class="flex items-center text-sm text-gray-400 space-x-4">
-                        <span id="featured-date"><i class="far fa-calendar-alt mr-2"></i>-</span>
-                    </div>
-                </div>
-            </section>
-
-            <!-- [포스트 그리드]: 최근 포스트 목록 (3열 구조) -->
-            <section>
-                <div class="flex justify-between items-end mb-6 border-b border-gray-200 dark:border-gray-700 pb-2">
-                    <h3 id="grid-heading" class="text-2xl font-bold">Latest Posts</h3>
-                </div>
-                
-                <!-- [반응형 설계]: 모바일(1열), 태블릿(2열), 데스크톱(3열) 그리드 -->
-                <div id="post-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- JavaScript로 포스트 카드들이 생성됩니다. -->
-                </div>
-            </section>
+        <div class="quote">
+            "물처럼 흘러가듯, 있는 그대로의 나를 마주하는 시간"
         </div>
 
-        <!-- 섹션 2: 소개 (About) 페이지 -->
-        <div id="about-section" class="hidden max-w-4xl mx-auto py-10 fade-in">
-            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row">
-                <!-- 프로필 이미지 -->
-                <div class="md:w-2/5 h-64 md:h-auto relative">
-                    <!-- [이미지 반영]: Pexels를 사용한 프로필 이미지 Placeholder -->
-                    <img src="https://images.pexels.com/photos/3184428/pexels-photo-3184428.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" onerror="this.onerror=null; this.src='https://placehold.co/500x700/60a5fa/ffffff?text=Jiyeon+Profile';" alt="지연 프로필" class="absolute inset-0 w-full h-full object-cover">
-                </div>
-                
-                <!-- 정보 -->
-                <div class="p-8 md:w-3/5 flex flex-col justify-center">
-                    <div class="uppercase tracking-wide text-sm text-primary font-semibold">About Me</div>
-                    <h2 class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-                        안녕하세요, 지연입니다.
-                    </h2>
-                    <p class="mt-4 text-lg text-gray-500 dark:text-gray-300">
-                        AI 최신 기술과 웹의 발전 과정을 탐구하며, 사용자 경험을 개선하는 개발에 몰두하고 있습니다. 
-                        기술과 디자인의 경계에서 의미 있는 프로젝트를 만들고자 합니다.
-                    </p>
-                    
-                    <div class="mt-8 space-y-4">
-                        <div class="flex items-center text-gray-600 dark:text-gray-400">
-                            <i class="fas fa-envelope w-6 text-center mr-3"></i>
-                            <a href="mailto:kjy57571234@gmail.com" class="hover:text-primary transition">kjy57571234@gmail.com</a>
-                        </div>
-                        <div class="flex items-center text-gray-600 dark:text-gray-400">
-                            <i class="fab fa-github w-6 text-center mr-3"></i>
-                            <a href="https://judy785.github.io/myhome" target="_blank" class="hover:text-primary transition">https://judy785.github.io/myhome</a>
-                        </div>
-                    </div>
+        <section class="main-philosophy">
+            <h2>대인관계 처세법</h2>
+            <ul class="philosophy-list">
+                <li>
+                    <strong>무위자연 (無爲自然)</strong>
+                    억지로 무언가를 바꾸려 하지 않고, 자연스러운 흐름에 몸을 맡깁니다. 인간관계 또한 순리대로 흐르도록 둡니다.
+                </li>
+                <li>
+                    <strong>번뇌와 집착을 받아들여라</strong>
+                    삶에서 생겨나는 고민과 집착을 억누르기보다, 그것 또한 나의 일부임을 인정하고 유연하게 받아들입니다.
+                </li>
+            </ul>
+        </section>
 
-                    <div class="mt-8">
-                        <button onclick="router('home')" class="bg-primary hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-full transition shadow-lg transform hover:-translate-y-1">
-                            최신 글 보러가기
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
+    </div>
 
-    <!-- 푸터 섹션 -->
-    <footer class="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 mt-auto">
-        <div class="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
-            <div class="md:flex md:justify-between md:items-center">
-                <div class="mb-4 md:mb-0">
-                    <span class="text-xl font-bold text-gray-800 dark:text-white">Jiyeon's Log</span>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                        &copy; 2025 Jiyeon. All rights reserved.
-                    </p>
-                </div>
-                <!-- 소셜 미디어 링크 -->
-                <div class="flex space-x-6">
-                    <a href="https://judy785.github.io/myhome" target="_blank" class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
-                        <span class="sr-only">GitHub</span>
-                        <i class="fab fa-github text-xl"></i>
-                    </a>
-                    <a href="mailto:kjy57571234@gmail.com" class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
-                        <span class="sr-only">Email</span>
-                        <i class="fas fa-envelope text-xl"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
+    <footer>
+        <p>&copy; 2026 지연 김. All Rights Reserved.</p>
     </footer>
 
-    <!-- [JavaScript]: 데이터, 라우팅, DOM 조작 로직 -->
-    <script>
-        // 1. CSV 데이터
-        const csvData = [
-            // [Design Post 1]
-            { 
-                category: 'design', 
-                sub: 'ui/ux', 
-                title: '마이크로 인터렉션의 힘', 
-                content: '사용자 경험 향상 애니메이션을 통해 인터페이스를 생동감 있게 만드는 방법론과 사례를 분석합니다.', 
-                date: '2025-11-30', // Featured Post보다 이전 날짜
-                image: 'https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' 
-            },
-            // [Design Post 2]
-            { 
-                category: 'design', 
-                sub: 'system', 
-                title: '디자인 시스템 구축 실패기', 
-                content: '토큰 네이밍부터 문서화, 컴포넌트 라이브러리 배포까지, 디자인 시스템 구축 시 겪었던 어려움과 교훈을 공유합니다.', 
-                date: '2025-11-29', // Featured Post보다 이전 날짜
-                image: 'https://images.pexels.com/photos/317377/pexels-photo-317377.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
-            },
-            // [Technology Posts] (이미지 URL 업데이트)
-            { 
-                category: 'technology', 
-                sub: 'AI 기술', 
-                title: '생성형 AI 기반 UI 자동 구성 기술', 
-                content: '사용자 행동을 학습해 화면 구성을 자동으로 생성하는 AI 기술 트렌드 사례 설명', 
-                date: '2025-12-01',
-                // [이미지 반영 수정]: Pexels 고정 URL로 교체 (AI 관련)
-                image: 'https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' 
-            },
-            { 
-                category: 'technology', 
-                sub: '최신정보', 
-                title: '2025년 AI 산업을 이끄는 주요 기술 업데이트', 
-                content: '생성형 AI 모델의 진화, LLM 기반 자동화 확대 등 2025년에 등장한 AI 기술 변화를 정리한 최신 브리핑.', 
-                date: '2025-12-02',
-                image: 'https://images.pexels.com/photos/16843058/pexels-photo-16843058/free-photo-of-ai-technology-digital-display-and-a-robot-hand.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
-            },
-            { 
-                category: 'technology', 
-                sub: '발전과정', 
-                title: '자바스크립트 런타임의 시대별 변화', 
-                content: '브라우저 JS 엔진, Node.js, Deno, Bun까지 이어지는 실행 환경 발전 과정과 성능 변화 정리', 
-                date: '2025-12-03',
-                image: 'https://images.pexels.com/photos/574071/pexels-photo-574071.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
-            },
-            { 
-                category: 'technology', 
-                sub: 'github 개념', 
-                title: 'GitHub Actions로 자동화 파이프라인 구축하기', 
-                content: '프로젝트 적용 사례, 자동 테스트·빌드 흐름 설명', 
-                date: '2025-12-04',
-                image: 'https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
-            },
-            { 
-                category: 'technology', 
-                sub: '웹 개념', 
-                title: '엣지 컴퓨팅과 분산 웹 아키텍처', 
-                content: '최신 웹 구조의 작동 방식과 사용자에게 제공되는 성능 이점 분석', 
-                date: '2025-12-05',
-                image: 'https://images.pexels.com/photos/4145349/pexels-photo-4145349.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
-            },
-            // [Featured Post] 최신 글 (2025-12-06)
-            { 
-                category: 'technology', 
-                sub: '웹 만들기 과정', 
-                title: '개인 취향 기반 추천 웹 앱 개발기', 
-                content: '아이디어 기획부터 UI 설계, API 구성, 배포까지의 과정을 단계별로 정리한 제작 스토리', 
-                date: '2025-12-06',
-                image: 'https://images.pexels.com/photos/3861958/pexels-photo-3861958.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' 
-            }
-        ];
-
-        // 날짜 기준 최신순 정렬 (Featured Post를 posts[0]으로 만듭니다)
-        const posts = csvData.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-        // 2. DOM 요소
-        const blogSection = document.getElementById('blog-section');
-        const aboutSection = document.getElementById('about-section');
-        const postGrid = document.getElementById('post-grid');
-        const featuredContainer = document.getElementById('featured-post-container');
-        
-        const fTitle = document.getElementById('featured-title');
-        const fDesc = document.getElementById('featured-desc');
-        const fDate = document.getElementById('featured-date');
-        const fBadge = document.getElementById('featured-badge');
-        const fImg = document.getElementById('featured-img');
-
-        // 3. 렌더링 함수
-        function renderPosts(filterCategory) {
-            postGrid.innerHTML = '';
-            
-            let gridItems = [];
-            let showFeatured = false;
-
-            // 'home' 버튼 클릭 시 Featured Post를 표시합니다.
-            if (filterCategory === 'home') {
-                showFeatured = true;
-                const featuredPost = posts[0];
-                updateFeatured(featuredPost);
-                // 그리드에는 Featured Post를 제외한 나머지 포스트를 표시합니다.
-                gridItems = posts.slice(1); 
-            } else {
-                showFeatured = false;
-                // 'technology'나 'design' 클릭 시 해당 카테고리만 필터링
-                gridItems = posts.filter(post => post.category === filterCategory);
-            }
-
-            // Featured 섹션 표시/숨김 제어
-            if(showFeatured) {
-                featuredContainer.classList.remove('hidden');
-                document.getElementById('grid-heading').innerText = '최신 포스트';
-            } else {
-                featuredContainer.classList.add('hidden');
-                // 카테고리 필터링 시 제목 업데이트
-                const headingText = {
-                    'technology': '기술/AI/웹 개념 포스트',
-                    'design': '디자인 포스트', 
-                    'all': '전체 포스트'
-                }[filterCategory] || '전체 포스트';
-                document.getElementById('grid-heading').innerText = headingText;
-            }
-
-            // 그리드 아이템 생성
-            if (gridItems.length === 0) {
-                 postGrid.innerHTML = '<p class="col-span-full text-center py-10 text-gray-500 dark:text-gray-400">아직 해당 카테고리의 포스트가 없습니다.</p>';
-            } else {
-                gridItems.forEach((post) => {
-                    const card = document.createElement('article');
-                    card.className = 'group bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700 flex flex-col h-full cursor-pointer';
-                    
-                    let badgeColor = 'bg-gray-500';
-                    if(post.category === 'design') badgeColor = 'bg-secondary';
-                    if(post.category === 'technology') badgeColor = 'bg-primary';
-    
-                    card.innerHTML = `
-                        <div class="relative h-48 overflow-hidden">
-                            <!-- 포스트 카드 이미지 (URL 사용) -->
-                            <img src="${post.image}" onerror="this.onerror=null; this.src='https://placehold.co/600x400/334155/ffffff?text=Image+Failed';" alt="${post.title}" class="w-full h-full object-cover card-zoom-image group-hover:opacity-90">
-                            <div class="absolute top-3 left-3">
-                                <span class="px-3 py-1 text-xs font-semibold text-white rounded-full ${badgeColor} uppercase tracking-wide">
-                                    ${post.sub}
-                                </span>
-                            </div>
-                        </div>
-                        <div class="p-6 flex flex-col flex-grow">
-                            <div class="flex items-center text-xs text-gray-400 mb-2">
-                                <i class="far fa-calendar mr-1"></i>
-                                ${post.date}
-                            </div>
-                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                                ${post.title}
-                            </h3>
-                            <p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-2 mb-4 flex-grow">
-                                ${post.content}
-                            </p>
-                            <div class="mt-auto pt-4 border-t border-gray-100 dark:border-gray-700">
-                                <span class="text-sm font-medium text-primary flex items-center group-hover:underline">
-                                    자세히 보기 <i class="fas fa-arrow-right ml-2 text-xs transition-transform group-hover:translate-x-1"></i>
-                                </span>
-                            </div>
-                        </div>
-                    `;
-                    postGrid.appendChild(card);
-                });
-            }
-        }
-
-        // Featured Post 데이터 업데이트 함수
-        function updateFeatured(post) {
-            fTitle.innerText = post.title;
-            fDesc.innerText = post.content;
-            fDate.innerHTML = `<i class="far fa-calendar-alt mr-2"></i> ${post.date}`;
-            fBadge.innerText = post.sub.toUpperCase();
-            fImg.src = post.image;
-        }
-
-        // 4. [SPA 라우팅]: 화면 전환 및 GNB 활성화 관리
-        function router(page) {
-            // GNB 버튼 활성화 상태 업데이트
-            document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active', 'text-primary'));
-            const activeBtn = document.getElementById(`nav-${page}`);
-            if(activeBtn) activeBtn.classList.add('active', 'text-primary');
-
-            // 섹션 표시/숨김 제어
-            if (page === 'about') {
-                blogSection.classList.add('hidden');
-                aboutSection.classList.remove('hidden');
-            } else {
-                aboutSection.classList.add('hidden');
-                blogSection.classList.remove('hidden');
-                // 해당 카테고리에 맞는 포스트 렌더링
-                renderPosts(page); 
-            }
-            
-            // 모바일 메뉴 숨김
-            document.getElementById('mobile-menu').classList.add('hidden');
-            // 스크롤 맨 위로 이동
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // 5. 초기화 및 이벤트 리스너
-        document.addEventListener('DOMContentLoaded', () => {
-            // 초기 화면 로드
-            router('home');
-
-            const themeToggle = document.getElementById('theme-toggle');
-            const html = document.documentElement;
-            const icon = themeToggle.querySelector('i');
-
-            // 다크 모드 토글 기능
-            themeToggle.addEventListener('click', () => {
-                html.classList.toggle('dark');
-                if (html.classList.contains('dark')) {
-                    icon.classList.remove('fa-moon', 'text-gray-600');
-                    icon.classList.add('fa-sun', 'text-yellow-300');
-                } else {
-                    icon.classList.remove('fa-sun', 'text-yellow-300');
-                    icon.classList.add('fa-moon', 'text-gray-600');
-                }
-            });
-
-            // 모바일 메뉴 토글 기능
-            document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-                document.getElementById('mobile-menu').classList.toggle('hidden');
-            });
-        });
-    </script>
 </body>
 </html>
