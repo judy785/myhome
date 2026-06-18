@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>지연 김의 삶의 철학</title>
+    <style>
+        :root {
+            --bg-color: #f7f6f3;
+            --text-color: #2c3e50;
+            --accent-color: #8da499;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.8;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            text-align: center;
+            padding: 80px 20px 40px 20px;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .main-philosophy {
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+            margin-bottom: 40px;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .main-philosophy h2 {
+            font-size: 1.5rem;
+            margin-top: 0;
+            color: var(--accent-color);
+        }
+
+        .philosophy-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .philosophy-list li {
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+        }
+
+        .philosophy-list strong {
+            display: block;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: #34495e;
+        }
+
+        .quote {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #555;
+            margin: 60px 0;
+            line-height: 2;
+            font-weight: 300;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 0.9rem;
+            color: #95a5a6;
+            border-top: 1px solid #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>지연 김의 삶의 철학</h1>
+        <p>알차고 즐거운, 행복한 삶을 기록하는 공간</p>
+    </header>
+
+    <div class="container">
+        
+        <div class="quote">
+            "물처럼 흘러가듯, 있는 그대로의 나를 마주하는 시간"
+        </div>
+
+        <section class="main-philosophy">
+            <h2>대인관계 처세법</h2>
+            <ul class="philosophy-list">
+                <li>
+                    <strong>무위자연 (無爲自然)</strong>
+                    억지로 무언가를 바꾸려 하지 않고, 자연스러운 흐름에 몸을 맡깁니다. 인간관계 또한 순리대로 흐르도록 둡니다.
+                </li>
+                <li>
+                    <strong>번뇌와 집착을 받아들여라</strong>
+                    삶에서 생겨나는 고민과 집착을 억누르기보다, 그것 또한 나의 일부임을 인정하고 유연하게 받아들입니다.
+                </li>
+            </ul>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 지연 김. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
